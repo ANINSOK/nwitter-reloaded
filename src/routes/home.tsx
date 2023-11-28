@@ -8,4 +8,5 @@ export default function Home() {
     <h1>
         <button onClick={logOut}>Logout </button>
     </h1>);
+
 }

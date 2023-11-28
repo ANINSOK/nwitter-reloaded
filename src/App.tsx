@@ -10,7 +10,7 @@ import reset from 'styled-reset';
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
 import ProtectedRoute from "./components/protected-route";
-// import { auth } from "./firebase";
+import { auth } from "./firebase";
 
 
 const router = createBrowserRouter([
@@ -60,8 +60,8 @@ const Wrapper = styled.div`
 function App() {
   const [isLoading, setLoading] = useState(true);
   const init = async () => {
-    // await auth.authStateReady();
-    // setTimeout(() => setLoading(false), 2000)
+    await auth.authStateReady();
+    setTimeout(() => setLoading(false), 2000)
     setLoading(false);
   };
   useEffect(() => {
