@@ -1,22 +1,26 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
-// import reset from "path-to-reset-file"; 
+import styled, { createGlobalStyle } from "styled-components";
 
-import Layout from "./components/layout"
-import Home from "./routes/home"; // Import the Home component
+import Layout from "./components/layout";
+import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
-import reset from 'styled-reset'
+import reset from 'styled-reset';
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
-import { auth } from "./firebase";
+import ProtectedRoute from "./components/protected-route";
+// import { auth } from "./firebase";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "",
@@ -35,7 +39,7 @@ const router = createBrowserRouter([
   { path: "/create-account", element: <CreateAccount /> }
 ])
 
-const GrobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
@@ -47,22 +51,27 @@ const GrobalStyles = createGlobalStyle`
   }
 `;
 
+const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
+
 function App() {
   const [isLoading, setLoading] = useState(true);
   const init = async () => {
-    await auth.authStateReady();
+    // await auth.authStateReady();
+    // setTimeout(() => setLoading(false), 2000)
     setLoading(false);
-  }
+  };
   useEffect(() => {
     init();
   }, []);
   return (
-    <>
-      <GrobalStyles />
-      {isLoading ? <LoadingScreen/> : <RouterProvider router={router} />}
-
-
-    </>
+    <Wrapper>
+      <GlobalStyles />
+      {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+    </Wrapper>
   )
 }
 
